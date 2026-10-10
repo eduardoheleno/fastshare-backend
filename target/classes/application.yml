@@ -1,0 +1,36 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: fastshare
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 3s
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+fastshare:
+  allowed-origins: ${ALLOWED_ORIGINS:http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173}
+  idle-ms: ${ROOM_IDLE_MS:900000}
+  lease-ms: ${PRESENCE_LEASE_MS:45000}
+  max-participants: 10
+  max-messages: 10000
+  broker:
+    host: ${BROKER_HOST:localhost}
+    port: ${BROKER_PORT:61613}
+    username: ${BROKER_USERNAME:fastshare}
+    password: ${BROKER_PASSWORD:local-fastshare}
+  turn:
+    urls: ${TURN_URLS:}
+    shared-secret: ${TURN_SHARED_SECRET:}
+    credential-ttl-seconds: ${TURN_CREDENTIAL_TTL_SECONDS:3600}
